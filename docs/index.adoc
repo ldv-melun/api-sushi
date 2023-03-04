@@ -1,0 +1,279 @@
+= API-Sushi
+
+== Objectif
+
+Cette application Spring Boot Kotlin a pour finalité de mettre à disposition un service web de type API REST, au service d'applications frontend Angular réalisées par des étudiants développeurs d'applications, en mode projet.
+
+== Analyse de la structure JSON initiale
+
+Nous partons d'une liste de _boxes_ initiale au format JSON. Ce fichier est localisé à la racine de l'application et se nomme link:boxes-sushi.json[boxes-sushi.json].
+
+L'objectif est de concevoir une API Rest qui produise ce résultat.
+
+C'est une activité de retro-ingénierie.
+
+Une analyse du domaine métier s'impose (recherche des dépendances, fonctionnelles et multivaluées réciproques, directes et élémentaires)
+
+Après étude des données JSON, nous constatons qu'une boxe est composée de propriétés simples (valeur de type numérique ou string), une liste de saveurs (String) et une liste d'aliments (objets).
+
+Exemple de la liste des boxes, on ne prend que les 2 premières boxes, (représentation via plantuml)
+
+.Structure JSON initiale
+[plantuml]
+----
+@startjson
+[
+    {
+        "id": 1,
+        "nom": "Tasty Blend",
+        "pieces": 12,
+        "prix": 12.50,
+        "image": "tasty-blend",
+        "aliments": [
+            {
+                "nom": "California Saumon Avocat",
+                "quantite": 3
+            },
+            {
+                "nom": "Sushi Saumon",
+                "quantite": 3
+            },
+            {
+                "nom": "Spring Avocat Cheese",
+                "quantite": 3
+            },
+            {
+                "nom": "California pacific",
+                "quantite": 3
+            },
+            {
+                "nom": "Edamame/Salade de chou",
+                "quantite": 1
+            }
+        ],
+        "saveurs": [
+            "saumon",
+            "avocat",
+            "cheese"
+        ]
+    },
+    {
+        "id": 2,
+        "nom": "Amateur Mix",
+        "pieces": 18,
+        "aliments": [
+            {
+                "nom": "Maki Salmon Roll",
+                "quantite": 3
+            },
+            {
+                "nom": "Spring Saumon Avocat",
+                "quantite": 3
+            },
+            {
+                "nom": "Maki Cheese Avocat",
+                "quantite": 6
+            },
+            {
+                "nom": "California Saumon Avocat",
+                "quantite": 3
+            },
+            {
+                "nom": "Edamame/Salade de chou",
+                "quantite": 1
+            }
+        ],
+        "saveurs": [
+            "coriandre",
+            "saumon",
+            "avocat",
+            "cheese"
+        ],
+        "prix": 15.90,
+        "image": "amateur-mix"
+    }
+]
+@endjson
+----
+== Analyse conceptuelle
+
+Après analyse de la structure JSON, nous dégageons les concepts suivants :
+
+.Vue conceptuelle
+[plantuml]
+----
+@startuml
+class Box {
+id
+nom
+nbPieces
+prix
+image
+}
+
+class Saveur {
+id
+nom
+}
+
+class Aliment {
+id
+nom
+}
+
+class AlimentBox {
+  quantite
+}
+
+Box "*" - "1..*" Saveur:"\t\t\t"
+Box " *  " -- " *  " Aliment
+(Box, Aliment) . AlimentBox
+
+hide circle
+@enduml
+----
+
+Cette analyse identifie deux associations de type `ManyToMany`, dont une porteuse d'une propriété (quantité), représentée par la classe association `AlimentBox`.
+
+== Analyse conceptuelle par réification de la classe association
+
+Technique qui tend à uniformiser la représentation des entités.
+
+(c'est cette version de l'analyse qui est retenue pour la représentation du domaine)
+
+.Réification de la classe association
+[plantuml]
+----
+@startuml
+class Box {
+id
+nom
+nbPieces
+prix
+image
+}
+
+class Saveur {
+id
+nom
+}
+
+class Aliment {
+id
+nom
+}
+
+class AlimentBox <<associacion>>{
+  id
+  quantite
+}
+
+Box "*" - "1..*" Saveur:"\t\t\t"
+Box  "1" -- "*" AlimentBox:"\t\t\t\t"
+AlimentBox  "*" - "1"  Aliment:"\t\t\t"
+
+Note left of AlimentBox : Unique : (Box, Aliment)
+
+hide circle
+@enduml
+----
+
+TIP: La contrainte d'unicité permet de conserver le statut de _classe association_. Une simplicité gagnant-gagnant.
+
+== Les images
+
+En placant les images dans un sous-dossier (nommé images) du dossier `/resources/static`, on les rend "directement" accessibles.
+
+Exemple : http://localhost:8080/images/tasty-blend.jpg
+
+== Mapping Objet Relationnel
+
+Le mapping se base sur <<_analyse_conceptuelle_par_réification_de_la_classe_association>>.
+
+On retrouvera donc les classes du domaine métier dans le dossier `domain`.
+
+[source, bash]
+----
+domain/
+├── AlimentBox.kt
+├── Aliment.kt
+├── Box.kt
+└── Saveur.kt
+----
+
+Pour la représentation JSON, on se référera au dossier  `dto` dans lequel sont définies les classes `AlimentBoxDtoJson` et `BoxDtoJson`.
+
+== Initialisation de la base de données
+
+On se réfère à la classe `DatabaseInitializer`, qui hérite de `ApplicationRunner`. Sa méthode `run` est lancée automatiquement au démarrage de l'application.
+
+L'algorithme est un ETL qui prend en entrée un fichier JSON décrivant des boxes sushi et injecte les données dans une base de données relationnelle.
+
+C'est la fonction inverse de l'API.
+
+Pour l'essentiel, les boxes sont créées et sauvegardées dans la base de données, ainsi que les nouveaux aliments et nouvelles saveurs si nécessaire. Puis la liste des aliments qui caractérise la boxe, avec leur quantité, est créée et sauvegardée.
+
+[source, kotlin, number]
+----
+
+for (boxDtoJson in boxesDtoJsonList) {
+    val box: Box = Box(
+        boxDtoJson.nom,
+        boxDtoJson.pieces,
+        boxDtoJson.image, boxDtoJson.prix
+    )
+
+    for (saveurNom in boxDtoJson.saveurs) {
+        val s: Saveur = saveurRepository.checkSaveSaveur(saveurNom)
+        box.saveurs.add(s)
+    }
+
+    // save a new box
+    boxRepository.save(box)
+
+    for (alimentBoxDtoJson in boxDtoJson.aliments) {
+        // first create/save aliment if not exists
+        val aliment = alimentRepository.checkSaveAliment(alimentBoxDtoJson.nom)
+        // create/save new AlimentBox
+        alimentBoxRepository.save(AlimentBox(box, aliment, alimentBoxDtoJson.quantite))
+    }
+}
+----
+
+
+## Lancement de l'application
+
+### Dans l'IDE
+
+C'est une application Spring Boot basée sur une base de données H2 (in memory).  Vous pouvez ainsi lancer l'application avec comme point d'entrée la classe `ApiSushiApplication`.
+
+### En tant qu'exécutable (phase de déploiement)
+
+Il n'est pas concevable d'avoir besoin d'un IDE pour lancer l'application en mode production.
+
+Il faut générer une version exécutable de l'application, que l'on déploie sur un serveur.
+
+* Génération d'un exécutable via l'IDE IntelliJ
+
+Sur la droite, ouvrit l'onglet `Maven` et sélectionner la tache *package*. L'action crée un exécutable .jar dans le dossier `target`.
+
+image:ide-create-jar.png[create jar]
+
+Le nom de l'exécutable est déterminé en fonction des informations de version présentes dans le `pom.xml`.  Dans notre cas on obtient un fichier jar :  `api-sushi-0.0.1-SNAPSHOT.jar`
+
+* Lancement en ligne de commande
+
+. Copier le jar dans un dossier
+. Placer une copie du fichier d'initialisation json dans ce dossier (boxes-sushi.json).
+. Lancer la commande `java -jar ./api-sushi-0.0.1-SNAPSHOT.jar`
+
+Problème éventuel : le port 8080 est occupé. Choisir un autre port en passant un argument de la forme `--server.port=<numéro de port>`. Exemple
+
+ java -jar ./api-sushi-0.0.1-SNAPSHOT.jar --server.port=8088
+
+TIP: Le serveur et application s'arrêtent avec un `CTRL+C` dans le terminal qui a lancé la commande comme signalé précédemment (sinon il faut tuer le processus)
+
+That's all !
+
+Le service, une fois lancé, est prêt à recevoir des requêtes HTTP, à une contrainte _Cross Origin_ près (voir https://spring.io/guides/gs/rest-service-cors/)
+
