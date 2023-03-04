@@ -1,6 +1,6 @@
 # API SUSHI
 
-API Support au projet de deuxième année 
+API Support d'un projet de deuxième année 
 
 ## Mode d'emploi
 
@@ -14,5 +14,4 @@ C'est une application Spring Boot basée sur une base de données H2 (in memory)
 
 * Génération d'un exécutable via l'IDE. (TODO)
 * Lancement en ligne de commande (TODO)
-
 

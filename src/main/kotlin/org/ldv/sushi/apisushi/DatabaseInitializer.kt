@@ -31,39 +31,35 @@ class   DatabaseInitializer @Autowired constructor(
     }
 
     /**
-     * Initialise la base de données relationnelle à partir d'un fichier JSON
+     * Initialise la base de données relationnelle à partir d'un fichier JSON initial
      */
     fun databaseInitializer(fileNameJson : String) {
         val mapper = jacksonObjectMapper()
-        val boxesJson : String =  File(fileNameJson).readText(Charsets.UTF_8)
-
-        val boxesj: List<BoxJson> = mapper.readValue(boxesJson)
+        val boxesJsonStr : String =  File(fileNameJson).readText(Charsets.UTF_8)
+        val boxesJsonList: List<BoxJson> = mapper.readValue(boxesJsonStr)
 
         // println(boxes)
 
-        for (boxj in boxesj) {
+        for (boxJson in boxesJsonList) {
             var box : Box = Box()
-            box.nom = boxj.nom
-            box.prix = boxj.prix
-            box.image = boxj.image
-            box.prix = boxj.prix
-            box.nbPieces = boxj.pieces
+            box.nom = boxJson.nom
+            box.prix = boxJson.prix
+            box.image = boxJson.image
+            box.prix = boxJson.prix
+            box.nbPieces = boxJson.pieces
 
-            for (saveur in boxj.saveurs) {
-                var s: Saveur? = saveurRepository.findByNom(saveur)
-                if (s == null) {
-                    s = Saveur(saveur)
-                    saveurRepository.save(s)
-                }
+            for (saveur in boxJson.saveurs) {
+                var s: Saveur = saveurRepository.checkSaveSaveur(saveur)
                 box.saveurs.add(s)
             }
 
+            // save a new box
             boxRepository.save(box)
 
-            for (alimentj in boxj.aliments ) {
-                // save aliment first if not exists
+            for (alimentj in boxJson.aliments ) {
+                // first create/save aliment if not exists
                 val aliment = alimentRepository.checkSaveAliment(alimentj.nom)
-                // save alimentBox
+                // create/save alimentBox
                 alimentBoxRepository.save(AlimentBox(box, aliment, alimentj.quantite))
             }
         }
@@ -77,4 +73,13 @@ private fun AlimentRepository.checkSaveAliment(nom: String): Aliment {
         this.save(aliment)
     }
     return aliment
+}
+
+private fun SaveurRepository.checkSaveSaveur(nomSaveur: String) : Saveur {
+    var s: Saveur? = this.findByNom(nomSaveur)
+    if (s == null) {
+        s = Saveur(nomSaveur)
+        this.save(s)
+    }
+    return s
 }
