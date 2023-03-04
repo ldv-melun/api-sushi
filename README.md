@@ -1,17 +1,3 @@
 # API SUSHI
 
-API Support d'un projet de deuxième année 
-
-## Mode d'emploi
-
-## Lancement de l'application 
-
-### Dans l'IDE
-
-C'est une application Spring Boot basée sur une base de données H2 (in memory)
-
-### En tant qu'exécutable 
-
-* Génération d'un exécutable via l'IDE. (TODO)
-* Lancement en ligne de commande (TODO)
-
+Voir le rendu ici : [API-SUSHI le pourquoi du comment et anlayse ](https://ldv-melun.github.io/api-sushi/)
