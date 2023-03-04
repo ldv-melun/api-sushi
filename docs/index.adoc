@@ -267,6 +267,9 @@ Le nom de l'exécutable est déterminé en fonction des informations de version 
 . Placer une copie du fichier d'initialisation json dans ce dossier (boxes-sushi.json).
 . Lancer la commande `java -jar ./api-sushi-0.0.1-SNAPSHOT.jar`
 
+La liste des boxes est accessible via : http://localhost:8080/api/boxes
+(voir le code du contrôleur)
+
 Problème éventuel : le port 8080 est occupé. Choisir un autre port en passant un argument de la forme `--server.port=<numéro de port>`. Exemple
 
  java -jar ./api-sushi-0.0.1-SNAPSHOT.jar --server.port=8088
