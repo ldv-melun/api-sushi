@@ -456,19 +456,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Nous partons d&#8217;une liste de <em>boxes</em> initiale au format JSON. Ce fichier est localisé à la racine de l&#8217;application et se nomme <a href="boxes-sushi.json">boxes-sushi.json</a>.</p>
 </div>
 <div class="paragraph">
-<p>L&#8217;objectif est de concevoir une API Rest qui produit ce résultat.</p>
+<p>L&#8217;objectif est de concevoir une API Rest qui produise ce résultat.</p>
 </div>
 <div class="paragraph">
 <p>C&#8217;est une activité de retro-ingénierie.</p>
 </div>
 <div class="paragraph">
-<p>L&#8217;application Spring Boot doit structurer le domaine métier. Une analyse des données s&#8217;impose (recherche des dépendances, fonctionnelles et multivaluées réciproques, directes et élémentaires)</p>
+<p>Une analyse du domaine métier s&#8217;impose (recherche des dépendances, fonctionnelles et multivaluées réciproques, directes et élémentaires)</p>
 </div>
 <div class="paragraph">
-<p>Après étude des données JSON, nous constatons qu&#8217;une boxe a des propriétés simples (valeur de type numérique ou string), une liste de saveurs (String) et une liste d&#8217;aliments (objets).</p>
+<p>Après étude des données JSON, nous constatons qu&#8217;une boxe est composée de propriétés simples (valeur de type numérique ou string), une liste de saveurs (String) et une liste d&#8217;aliments (objets).</p>
 </div>
 <div class="paragraph">
-<p>Exemple d&#8217;une liste de boxes à 2 éléments (représentation via plantuml)</p>
+<p>Exemple de la liste des boxes, on ne prend que les 2 premières boxes, (représentation via plantuml)</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -482,7 +482,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_analyse_conceptuelle">Analyse conceptuelle</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>D&#8217;après la structure JSON fournie, nous pouvons en dégager les concepts suivants :</p>
+<p>Après analyse de la structure JSON, nous dégageons les concepts suivants :</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -671,7 +671,7 @@ for (boxDtoJson in boxesDtoJsonList) {
 <p>Copier le jar dans un dossier</p>
 </li>
 <li>
-<p>Placer une copie du fichier d&#8217;initialisation json dans ce dossier (boxes-sushi.json).</p>
+<p>Placer une copie du fichier d&#8217;initialisation json dans ce dossier (<a href="boxes-sushi.json">boxes-sushi.json</a>.</p>
 </li>
 <li>
 <p>Lancer la commande <code>java -jar ./api-sushi-0.0.1-SNAPSHOT.jar</code></p>
@@ -682,6 +682,10 @@ for (boxDtoJson in boxesDtoJsonList) {
 </ul>
 </div>
 <div class="paragraph">
+<p>La liste des boxes est accessible via : <a href="http://localhost:8080/api/boxes" class="bare">http://localhost:8080/api/boxes</a>
+(voir le code du contrôleur)</p>
+</div>
+<div class="paragraph">
 <p>Problème éventuel : le port 8080 est occupé. Choisir un autre port en passant un argument de la forme <code>--server.port=&lt;numéro de port&gt;</code>. Exemple</p>
 </div>
 <div class="literalblock">
@@ -689,11 +693,23 @@ for (boxDtoJson in boxesDtoJsonList) {
 <pre>java -jar ./api-sushi-0.0.1-SNAPSHOT.jar --server.port=8088</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Arrêter le serveur et application avec un <code>CTRL+C</code>.</p>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le terminal qui a lancé la commande comme signalé précédemment (sinon il faut tuer le processus)
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>That&#8217;s all !</p>
+</div>
+<div class="paragraph">
+<p>Le service, une fois lancé, est prêt à recevoir des requêtes HTTP, à une contrainte <em>Cross Origin</em> près (voir <a href="https://spring.io/guides/gs/rest-service-cors/" class="bare">https://spring.io/guides/gs/rest-service-cors/</a>)</p>
 </div>
 </div>
 </div>
@@ -701,7 +717,7 @@ for (boxDtoJson in boxesDtoJsonList) {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-04 18:49:49 +0100
+Last updated 2023-03-05 07:34:36 +0100
 </div>
 </div>
 </body>

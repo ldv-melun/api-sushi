@@ -264,7 +264,7 @@ Le nom de l'exécutable est déterminé en fonction des informations de version 
 * Lancement en ligne de commande
 
 . Copier le jar dans un dossier
-. Placer une copie du fichier d'initialisation json dans ce dossier (boxes-sushi.json).
+. Placer une copie du fichier d'initialisation json dans ce dossier (link:boxes-sushi.json[boxes-sushi.json].
 . Lancer la commande `java -jar ./api-sushi-0.0.1-SNAPSHOT.jar`
 
 La liste des boxes est accessible via : http://localhost:8080/api/boxes
@@ -274,7 +274,7 @@ Problème éventuel : le port 8080 est occupé. Choisir un autre port en passant
 
  java -jar ./api-sushi-0.0.1-SNAPSHOT.jar --server.port=8088
 
-TIP: Le serveur et application s'arrêtent avec un `CTRL+C` dans le terminal qui a lancé la commande comme signalé précédemment (sinon il faut tuer le processus)
+TIP: Le serveur et application s'arrêtent par un `CTRL+C` dans le terminal qui a lancé la commande comme signalé précédemment (sinon il faut tuer le processus)
 
 That's all !
 
