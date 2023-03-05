@@ -1,16 +1,24 @@
 = API-Sushi
+:toc-title: Table des matières
+:toclevels: 4
+:toc: top
+
 
 == Objectif
 
-Cette application Spring Boot Kotlin a pour finalité de mettre à disposition un service web de type API REST, au service d'applications frontend Angular réalisées par des étudiants développeurs d'applications, en mode projet.
+Cette application Spring Boot Kotlin a pour finalité de mettre à disposition un service web de type API REST, au service d'applications frontend Angular que des étudiants développeurs d'applications doivent réaliser, en mode projet.
 
-== Analyse de la structure JSON initiale
+L'API doit fournir une liste de boxes sushi, disponible à la commande, au format JSON.
 
-Nous partons d'une liste de _boxes_ initiale au format JSON. Ce fichier est localisé à la racine de l'application et se nomme link:boxes-sushi.json[boxes-sushi.json].
+Le format initial JSON est imposé (provient d'une situation réelle), et placé à la racine de l'application :  link:boxes-sushi.json[boxes-sushi.json].
 
-L'objectif est de concevoir une API Rest qui produise ce résultat.
+L'objectif est de concevoir una application web qui produise ce résultat via une API HTTP.
+
+On suppose que l'application s'appuie sur une base de donnée relationnelle, au minimum en 3ième forme normale.
 
 C'est une activité de retro-ingénierie.
+
+== Analyse de la structure JSON initiale
 
 Une analyse du domaine métier s'impose (recherche des dépendances, fonctionnelles et multivaluées réciproques, directes et élémentaires)
 

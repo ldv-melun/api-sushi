@@ -436,31 +436,55 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-top">
 <div id="header">
 <h1>API-Sushi</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table des matières</div>
+<ul class="sectlevel1">
+<li><a href="#_objectif">Objectif</a></li>
+<li><a href="#_analyse_de_la_structure_json_initiale">Analyse de la structure JSON initiale</a></li>
+<li><a href="#_analyse_conceptuelle">Analyse conceptuelle</a></li>
+<li><a href="#_analyse_conceptuelle_par_réification_de_la_classe_association">Analyse conceptuelle par réification de la classe association</a></li>
+<li><a href="#_les_images">Les images</a></li>
+<li><a href="#_mapping_objet_relationnel">Mapping Objet Relationnel</a></li>
+<li><a href="#_initialisation_de_la_base_de_données">Initialisation de la base de données</a></li>
+<li><a href="#_lancement_de_lapplication">Lancement de l&#8217;application</a>
+<ul class="sectlevel2">
+<li><a href="#_dans_lide">Dans l&#8217;IDE</a></li>
+<li><a href="#_en_tant_quexécutable_phase_de_déploiement">En tant qu&#8217;exécutable (phase de déploiement)</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
 <h2 id="_objectif">Objectif</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Cette application Spring Boot Kotlin a pour finalité de mettre à disposition un service web de type API REST, au service d&#8217;applications frontend Angular réalisées par des étudiants développeurs d&#8217;applications, en mode projet.</p>
+<p>Cette application Spring Boot Kotlin a pour finalité de mettre à disposition un service web de type API REST, au service d&#8217;applications frontend Angular que des étudiants développeurs d&#8217;applications doivent réaliser, en mode projet.</p>
+</div>
+<div class="paragraph">
+<p>L&#8217;API doit fournir une liste de boxes sushi, disponible à la commande, au format JSON.</p>
+</div>
+<div class="paragraph">
+<p>Le format initial JSON est imposé (provient d&#8217;une situation réelle), et placé à la racine de l&#8217;application :  <a href="boxes-sushi.json">boxes-sushi.json</a>.</p>
+</div>
+<div class="paragraph">
+<p>L&#8217;objectif est de concevoir una application web qui produise ce résultat via une API HTTP.</p>
+</div>
+<div class="paragraph">
+<p>On suppose que l&#8217;application s&#8217;appuie sur une base de donnée relationnelle, au minimum en 3ième forme normale.</p>
+</div>
+<div class="paragraph">
+<p>C&#8217;est une activité de retro-ingénierie.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_analyse_de_la_structure_json_initiale">Analyse de la structure JSON initiale</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Nous partons d&#8217;une liste de <em>boxes</em> initiale au format JSON. Ce fichier est localisé à la racine de l&#8217;application et se nomme <a href="boxes-sushi.json">boxes-sushi.json</a>.</p>
-</div>
-<div class="paragraph">
-<p>L&#8217;objectif est de concevoir une API Rest qui produise ce résultat.</p>
-</div>
-<div class="paragraph">
-<p>C&#8217;est une activité de retro-ingénierie.</p>
-</div>
 <div class="paragraph">
 <p>Une analyse du domaine métier s&#8217;impose (recherche des dépendances, fonctionnelles et multivaluées réciproques, directes et élémentaires)</p>
 </div>
@@ -717,7 +741,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-05 07:34:36 +0100
+Last updated 2023-03-05 14:46:06 +0100
 </div>
 </div>
 </body>
