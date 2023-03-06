@@ -20,6 +20,6 @@ class Box(
     var aliments = mutableListOf<AlimentBox>()
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     var id: Long? = null
 }
