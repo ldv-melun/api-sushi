@@ -673,26 +673,26 @@ spring.jpa.hibernate.ddl-auto=create</code></pre>
 </pre></td>
   <td class="code"><pre>
 for (boxDtoJson in boxesDtoJsonList) {
-    val box: Box = Box(
-        boxDtoJson.nom,
-        boxDtoJson.pieces,
-        boxDtoJson.image, boxDtoJson.prix
-    )
+  val box: Box = Box(
+      boxDtoJson.nom,
+      boxDtoJson.pieces,
+      boxDtoJson.image, boxDtoJson.prix
+  )
 
-    for (saveurNom in boxDtoJson.saveurs) {
-        val s: Saveur = saveurRepository.checkSaveSaveur(saveurNom)
-        box.saveurs.add(s)
-    }
+  for (saveurNom in boxDtoJson.saveurs) {
+      val s: Saveur = saveurRepository.findOrCreateSaveur(saveurNom)
+      box.saveurs.add(s)
+  }
 
-    // save a new box
-    boxRepository.save(box)
+  // save a new box
+  boxRepository.save(box)
 
-    for (alimentBoxDtoJson in boxDtoJson.aliments) {
-        // first create/save aliment if not exists
-        val aliment = alimentRepository.checkSaveAliment(alimentBoxDtoJson.nom)
-        // create/save new AlimentBox
-        alimentBoxRepository.save(AlimentBox(box, aliment, alimentBoxDtoJson.quantite))
-    }
+  for (alimentBoxDtoJson in boxDtoJson.aliments) {
+     // first create/save aliment if not exists
+     val aliment = alimentRepository.findOrCreateAliment(alimentBoxDtoJson.nom)
+     // create/save new AlimentBox
+     alimentBoxRepository.save(AlimentBox(box, aliment, alimentBoxDtoJson.quantite))
+  }
 }</pre></td>
 </tr></table></code></pre>
 </div>
@@ -906,7 +906,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-07 18:58:01 +0100
+Last updated 2023-03-07 19:08:51 +0100
 </div>
 </div>
 </body>

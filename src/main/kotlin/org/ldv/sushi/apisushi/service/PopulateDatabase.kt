@@ -52,7 +52,7 @@ class PopulateDatabase @Autowired constructor(
             box.id = boxDtoJson.id
 
             for (saveurNom in boxDtoJson.saveurs) {
-                val s: Saveur = saveurRepository.checkSaveSaveur(saveurNom)
+                val s: Saveur = saveurRepository.findOrCreateSaveur(saveurNom)
                 box.saveurs.add(s)
             }
 
@@ -61,7 +61,7 @@ class PopulateDatabase @Autowired constructor(
 
             for (alimentBoxDtoJson in boxDtoJson.aliments) {
                 // first create/save aliment if not exists
-                val aliment = alimentRepository.checkSaveAliment(alimentBoxDtoJson.nom)
+                val aliment = alimentRepository.findOrCreateAliment(alimentBoxDtoJson.nom)
                 // create/save new AlimentBox
                 alimentBoxRepository.save(AlimentBox(box, aliment, alimentBoxDtoJson.quantite))
             }
@@ -71,7 +71,7 @@ class PopulateDatabase @Autowired constructor(
 
 // Extensions
 
-private fun AlimentRepository.checkSaveAliment(nom: String): Aliment {
+private fun AlimentRepository.findOrCreateAliment(nom: String): Aliment {
     var aliment: Aliment? = this.findByNom(nom)
     if (aliment == null) {
         aliment = Aliment(nom)
@@ -80,7 +80,7 @@ private fun AlimentRepository.checkSaveAliment(nom: String): Aliment {
     return aliment
 }
 
-private fun SaveurRepository.checkSaveSaveur(nomSaveur: String): Saveur {
+private fun SaveurRepository.findOrCreateSaveur(nomSaveur: String): Saveur {
     var s: Saveur? = this.findByNom(nomSaveur)
     if (s == null) {
         s = Saveur(nomSaveur)
