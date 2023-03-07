@@ -9,10 +9,9 @@ import javax.persistence.*
 @Table( uniqueConstraints = [UniqueConstraint(columnNames = ["box_id", "aliment_id"])])
 class AlimentBox (@ManyToOne var box: Box,
                   @ManyToOne var aliment: Aliment,
-                  var quantite: Int)
+                  var quantite: Double)
 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
-
 }

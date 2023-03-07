@@ -448,7 +448,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_analyse_conceptuelle_par_réification_de_la_classe_association">Analyse conceptuelle par réification de la classe association</a></li>
 <li><a href="#_les_images">Les images</a></li>
 <li><a href="#_mapping_objet_relationnel">Mapping Objet Relationnel</a></li>
+<li><a href="#_application_properties">Application properties</a></li>
 <li><a href="#_initialisation_de_la_base_de_données">Initialisation de la base de données</a></li>
+<li><a href="#_vérification_via_un_test_unitaire">Vérification via un test unitaire</a>
+<ul class="sectlevel2">
+<li><a href="#_explication_de_properties_et_data_h2_sql">Explication de properties et data-h2.sql</a></li>
+<li><a href="#_la_classe_des_tests_unitaires">La classe des tests unitaires</a></li>
+<li><a href="#_résultat_des_tests">Résultat des tests</a></li>
+</ul>
+</li>
 <li><a href="#_lancement_de_lapplication">Lancement de l&#8217;application</a>
 <ul class="sectlevel2">
 <li><a href="#_dans_lide">Dans l&#8217;IDE</a></li>
@@ -583,6 +591,45 @@ La contrainte d&#8217;unicité permet de conserver le statut de <em>classe assoc
 </div>
 </div>
 <div class="sect1">
+<h2 id="_application_properties">Application properties</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>L&#8217;application s&#8217;appuie sur un SGBDR en mémoire (h2)</p>
+</div>
+<div class="paragraph">
+<p>En cas d&#8217;une solution persistante, penser à placer le mode dll à update un fois la base de données créée (schéma)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">spring.datasource.url=jdbc:h2:mem:sushi
+# spring.datasource.url=jdbc:h2:~/db/apisushi;AUTO_SERVER=TRUE
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# first create then update
+spring.jpa.hibernate.ddl-auto=create</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En mode persistant, la base de données peut être consultée :</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="data-source-h2.png" alt="data source"></span></p>
+</div>
+<div class="paragraph">
+<p>et obtenir un dump de la base (<code>data-h2.sql</code>), bien pratique pour initialiser la base de données pour les tests unitaires (dans la branche test)</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="genere-data-h2.sql.png" alt="genere data h2.sql"></span></p>
+</div>
+<div class="paragraph">
+<p>Le fichier <code>data-h2.sql</code> nous servira à vérifier qu&#8217;à partir de la base de données obtenue, l&#8217;application est capable de reproduire la sortie JSON initiale (objet d&#8217;un test unitaire plus loin)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_initialisation_de_la_base_de_données">Initialisation de la base de données</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -648,6 +695,124 @@ for (boxDtoJson in boxesDtoJsonList) {
     }
 }</pre></td>
 </tr></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vérification_via_un_test_unitaire">Vérification via un test unitaire</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La branche de test</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">src/test/
+├── kotlin
+│   └── org
+│       └── ldv
+│           └── sushi
+│               └── apisushi
+│                   └── ApiSushiApplicationTests.kt
+└── resources <b class="conum">(1)</b>
+    ├── application-test.properties <b class="conum">(2)</b>
+    └── data-h2.sql <b class="conum">(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Un dossier <code>resources</code> est créé, avec <code>test</code> comme parent</p>
+</li>
+<li>
+<p>Un fichier de configuration dédié</p>
+</li>
+<li>
+<p>La base de données de test gnénérée à partir de la command <code>SCRIPT TO</code> de <code>H2</code> illustrée ici :  <a href="#_application_properties">Application properties</a></p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_explication_de_properties_et_data_h2_sql">Explication de properties et data-h2.sql</h3>
+<div class="listingblock">
+<div class="title">src/test/resources/application-test.properties</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">#spring.datasource.url=jdbc:h2:mem:sushi
+spring.datasource.url=jdbc:h2:~/db/testapisushi;AUTO_SERVER=TRUE
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# applique une initialisation de la DB via data-h2.sql dans test/resources/
+
+# attention, application.properties de base est également lancé,
+# donc si spring.jpa.hibernate.ddl-auto=create, la base de données sera vide
+# (la mettre en update)
+
+# pour activer data-h2.sql (convention de nommage imposée)
+spring.batch.jdbc.initialize-schema=always
+spring.sql.init.platform=h2</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_la_classe_des_tests_unitaires">La classe des tests unitaires</h3>
+<div class="listingblock">
+<div class="title">src/test/&#8230;&#8203;/ApiSushiApplicationTests.kt</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="typescript">@TestPropertySource(
+        locations = [&quot;classpath:application-test.properties&quot;]) <b class="conum">(1)</b>
+@DataJpaTest
+class ApiSushiApplicationTests @Autowired constructor(
+var boxRepository: BoxRepository
+) {
+
+var logger: Logger = org.slf4j.LoggerFactory.getLogger(ApiSushiApplicationTests::class.java)
+
+@Test
+fun contextLoads() {
+  Assertions.assertTrue(true)
+}
+
+@Test
+ fun verifSourceJsonEtApllicationJson() {
+  // compare le fichier JSON d'origine avec la version produite par l'application
+  val FILE_NAME_JSON = &quot;./assets/boxes-sushi.json&quot;
+
+  val boxesJsonStr: String = File(FILE_NAME_JSON).readText(Charsets.UTF_8)
+
+  val mapper = jacksonObjectMapper() <b class="conum">(2)</b>
+
+  val boxesJsonFromDataBase: String = mapper.writerWithDefaultPrettyPrinter()
+        .writeValueAsString((this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) }).toList()) <b class="conum">(3)</b>
+
+  JSONAssert.assertEquals(boxesJsonStr, boxesJsonFromDataBase, false) <b class="conum">(4)</b>
+ }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>Prise en compte deu fichier de configuration</p>
+</li>
+<li>
+<p>On utilise la bibliothèque jackson initialement intégrée dans l&#8217;écosystème</p>
+</li>
+<li>
+<p>Transmforme chaque élément de type <code>Box</code> en une instance de <code>BoxDtoJson</code> et demande une représentation textuelle de la collection (du JSON sérialisé en string)</p>
+</li>
+<li>
+<p>Utilise la bibliothèque <code>JSONAssert</code> (<em>Library for writing tests that checks JSON documents (useful for testing responses from REST services</em>) pour comparer 2 représentation JSON sans tenir compte de l&#8217;ordre des éléments internes.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_résultat_des_tests">Résultat des tests</h3>
+<div class="paragraph">
+<p><span class="image"><img src="resultat-test-unitaire.png" alt="resultat tu"></span></p>
 </div>
 </div>
 </div>
@@ -741,7 +906,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-05 14:46:06 +0100
+Last updated 2023-03-07 18:58:01 +0100
 </div>
 </div>
 </body>

@@ -1,10 +1,6 @@
 package org.ldv.sushi.apisushi.domain
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToMany
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
 class Box(
@@ -20,6 +16,6 @@ class Box(
     var aliments = mutableListOf<AlimentBox>()
 
     @Id
-//    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 }

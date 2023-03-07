@@ -211,6 +211,36 @@ domain/
 
 Pour la représentation JSON, on se référera au dossier  `dto` dans lequel sont définies les classes `AlimentBoxDtoJson` et `BoxDtoJson`.
 
+
+== Application properties
+
+L'application s'appuie sur un SGBDR en mémoire (h2)
+
+En cas d'une solution persistante, penser à placer le mode dll à update un fois la base de données créée (schéma)
+
+[source, properties]
+----
+spring.datasource.url=jdbc:h2:mem:sushi
+# spring.datasource.url=jdbc:h2:~/db/apisushi;AUTO_SERVER=TRUE
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# first create then update
+spring.jpa.hibernate.ddl-auto=create
+----
+
+En mode persistant, la base de données peut être consultée :
+
+image:data-source-h2.png[data source]
+
+et obtenir un dump de la base (`data-h2.sql`), bien pratique pour initialiser la base de données pour les tests unitaires (dans la branche test)
+
+image:genere-data-h2.sql.png[]
+
+Le fichier `data-h2.sql` nous servira à vérifier qu'à partir de la base de données obtenue, l'application est capable de reproduire la sortie JSON initiale (objet d'un test unitaire plus loin)
+
 == Initialisation de la base de données
 
 On se réfère à la classe `DatabaseInitializer`, qui hérite de `ApplicationRunner`. Sa méthode `run` est lancée automatiquement au démarrage de l'application.
@@ -248,14 +278,104 @@ for (boxDtoJson in boxesDtoJsonList) {
 }
 ----
 
+== Vérification via un test unitaire
 
-## Lancement de l'application
+La branche de test
+[source, bash]
+----
+src/test/
+├── kotlin
+│   └── org
+│       └── ldv
+│           └── sushi
+│               └── apisushi
+│                   └── ApiSushiApplicationTests.kt
+└── resources <1>
+    ├── application-test.properties <2>
+    └── data-h2.sql <3>
 
-### Dans l'IDE
+----
+<1> Un dossier `resources` est créé, avec `test` comme parent
+<2> Un fichier de configuration dédié
+<3> La base de données de test gnénérée à partir de la command `SCRIPT TO` de `H2` illustrée ici :  <<_application_properties>>
+
+=== Explication de properties et data-h2.sql
+
+.src/test/resources/application-test.properties
+[source, properties]
+----
+#spring.datasource.url=jdbc:h2:mem:sushi
+spring.datasource.url=jdbc:h2:~/db/testapisushi;AUTO_SERVER=TRUE
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# applique une initialisation de la DB via data-h2.sql dans test/resources/
+
+# attention, application.properties de base est également lancé,
+# donc si spring.jpa.hibernate.ddl-auto=create, la base de données sera vide
+# (la mettre en update)
+
+# pour activer data-h2.sql (convention de nommage imposée)
+spring.batch.jdbc.initialize-schema=always
+spring.sql.init.platform=h2
+
+----
+=== La classe des tests unitaires
+
+.src/test/.../ApiSushiApplicationTests.kt
+[source, typescript]
+----
+
+@TestPropertySource(
+	locations = ["classpath:application-test.properties"]) <1>
+@DataJpaTest
+class ApiSushiApplicationTests @Autowired constructor(
+var boxRepository: BoxRepository
+) {
+
+var logger: Logger = org.slf4j.LoggerFactory.getLogger(ApiSushiApplicationTests::class.java)
+
+@Test
+fun contextLoads() {
+  Assertions.assertTrue(true)
+}
+
+@Test
+ fun verifSourceJsonEtApllicationJson() {
+  // compare le fichier JSON d'origine avec la version produite par l'application
+  val FILE_NAME_JSON = "./assets/boxes-sushi.json"
+
+  val boxesJsonStr: String = File(FILE_NAME_JSON).readText(Charsets.UTF_8)
+
+  val mapper = jacksonObjectMapper() <2>
+
+  val boxesJsonFromDataBase: String = mapper.writerWithDefaultPrettyPrinter()
+        .writeValueAsString((this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) }).toList()) <3>
+
+  JSONAssert.assertEquals(boxesJsonStr, boxesJsonFromDataBase, false) <4>
+ }
+}
+
+----
+<1> Prise en compte deu fichier de configuration
+<2> On utilise la bibliothèque jackson initialement intégrée dans l'écosystème
+<3> Transmforme chaque élément de type `Box` en une instance de `BoxDtoJson` et demande une représentation textuelle de la collection (du JSON sérialisé en string)
+<4> Utilise la bibliothèque `JSONAssert` (_Library for writing tests that checks JSON documents (useful for testing responses from REST services_) pour comparer 2 représentation JSON sans tenir compte de l'ordre des éléments internes.
+
+=== Résultat des tests
+
+image:resultat-test-unitaire.png[resultat tu]
+
+
+== Lancement de l'application
+
+=== Dans l'IDE
 
 C'est une application Spring Boot basée sur une base de données H2 (in memory).  Vous pouvez ainsi lancer l'application avec comme point d'entrée la classe `ApiSushiApplication`.
 
-### En tant qu'exécutable (phase de déploiement)
+=== En tant qu'exécutable (phase de déploiement)
 
 Il n'est pas concevable d'avoir besoin d'un IDE pour lancer l'application en mode production.
 

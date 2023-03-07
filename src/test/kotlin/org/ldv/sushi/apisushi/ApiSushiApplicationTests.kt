@@ -14,7 +14,7 @@ import java.io.File
 
 
 @TestPropertySource(
-	locations = ["classpath:application.properties"])
+	locations = ["classpath:application-test.properties"])
 @DataJpaTest
 class ApiSushiApplicationTests @Autowired constructor(
 	var boxRepository: BoxRepository
@@ -28,9 +28,9 @@ class ApiSushiApplicationTests @Autowired constructor(
 	}
 
 	@Test
-	fun goodJson() {
-
-		val FILE_NAME_JSON = "boxes-sushi.json"
+	fun verifSourceJsonEtApllicationJson() {
+        // compare le fichier JSON d'origine avec la version produite par l'application
+		val FILE_NAME_JSON = "./assets/boxes-sushi.json"
 
 		val boxesJsonStr: String = File(FILE_NAME_JSON).readText(Charsets.UTF_8)
 
@@ -38,10 +38,6 @@ class ApiSushiApplicationTests @Autowired constructor(
 
 		val boxesJsonFromDataBase: String = mapper.writerWithDefaultPrettyPrinter()
 			.writeValueAsString((this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) }).toList())
-
-		println("boxesJsonFromDataBase count : " + this.boxRepository.count())
-
-		println("boxesJsonFromDataBase : $boxesJsonFromDataBase")
 
 		JSONAssert.assertEquals(boxesJsonStr, boxesJsonFromDataBase, false)
 	}

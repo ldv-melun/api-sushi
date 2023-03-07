@@ -2,7 +2,6 @@ package org.ldv.sushi.apisushi.service
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.ldv.sushi.apisushi.DatabaseInitializer
 import org.ldv.sushi.apisushi.domain.Aliment
 import org.ldv.sushi.apisushi.domain.AlimentBox
 import org.ldv.sushi.apisushi.domain.Box
@@ -15,7 +14,6 @@ import org.ldv.sushi.apisushi.repository.SaveurRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import java.io.File
 
