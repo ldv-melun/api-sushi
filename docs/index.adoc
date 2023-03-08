@@ -370,6 +370,24 @@ fun contextLoads() {
 
 image:resultat-test-unitaire.png[resultat tu]
 
+== Le contrôleur
+
+En se basant sur `RestController`, on retourne une liste des boxes au format `BoxDtoJson` (qui mappe la structure de données de la version JSON initiale)
+
+.src/.../controller/ApiController
+[source, typescript]
+----
+
+@RestController
+class ApiController @Autowired constructor(private val boxRepository: BoxRepository) {
+
+    @GetMapping("/api/boxes")
+    fun allBoxes(): ResponseEntity<List<BoxDtoJson>> {
+        return ResponseEntity.ok(this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) })
+    }
+}
+
+----
 
 == Lancement de l'application
 
