@@ -12,11 +12,13 @@ L'API doit fournir une liste de boxes sushi, disponible à la commande, au forma
 
 Le format initial JSON est imposé (provient d'une situation réelle), et placé à la racine de l'application :  link:boxes-sushi.json[boxes-sushi.json].
 
-L'objectif est de concevoir una application web qui produise ce résultat via une API HTTP.
+Le but de ce projet est de concevoir una application web qui produise ce résultat via une API HTTP.
 
 On suppose que l'application s'appuie sur une base de donnée relationnelle, au minimum en 3ième forme normale.
 
 C'est une activité de retro-ingénierie.
+
+image:analyse-retroconception.png[retroconception]
 
 == Analyse de la structure JSON initiale
 
