@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.ldv.sushi</groupId>
 	<artifactId>api-sushi</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>api-sushi</name>
 	<description>API Sushi </description>
 	<properties>
@@ -55,6 +55,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!--					https://github.com/skyscreamer/JSONassert-->
+		<dependency>
+			<groupId>org.skyscreamer</groupId>
+			<artifactId>jsonassert</artifactId>
+			<version>1.5.1</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -99,13 +107,6 @@
 						<groupId>org.jetbrains.kotlin</groupId>
 						<artifactId>kotlin-maven-serialization</artifactId>
 						<version>${kotlin.version}</version>
-					</dependency>
-<!--					https://github.com/skyscreamer/JSONassert-->
-					<dependency>
-						<groupId>org.skyscreamer</groupId>
-						<artifactId>jsonassert</artifactId>
-						<version>1.5.1</version>
-						<scope>test</scope>
 					</dependency>
 				</dependencies>
 			</plugin>

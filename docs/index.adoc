@@ -407,20 +407,20 @@ Sur la droite, ouvrit l'onglet `Maven` et sélectionner la tache *package*. L'ac
 
 image:ide-create-jar.png[create jar]
 
-Le nom de l'exécutable est déterminé en fonction des informations de version présentes dans le `pom.xml`.  Dans notre cas on obtient un fichier jar :  `api-sushi-0.0.1-SNAPSHOT.jar`
+Le nom de l'exécutable est déterminé en fonction des informations de version présentes dans le `pom.xml`.  Dans notre cas on obtient un fichier jar :  `api-sushi-0.0.X-SNAPSHOT.jar`
 
 * Lancement en ligne de commande
 
 . Copier le jar dans un dossier
 . Placer une copie du fichier d'initialisation json dans ce dossier (link:boxes-sushi.json[boxes-sushi.json].
-. Lancer la commande `java -jar ./api-sushi-0.0.1-SNAPSHOT.jar`
+. Lancer la commande `java -jar ./api-sushi-0.0.X-SNAPSHOT.jar`
 
 La liste des boxes est accessible via : http://localhost:8080/api/boxes
 (voir le code du contrôleur)
 
 Problème éventuel : le port 8080 est occupé. Choisir un autre port en passant un argument de la forme `--server.port=<numéro de port>`. Exemple
 
- java -jar ./api-sushi-0.0.1-SNAPSHOT.jar --server.port=8088
+ java -jar ./api-sushi-0.0.2-SNAPSHOT.jar --server.port=8088
 
 TIP: Le serveur et application s'arrêtent par un `CTRL+C` dans le terminal qui a lancé la commande comme signalé précédemment (sinon il faut tuer le processus)
 

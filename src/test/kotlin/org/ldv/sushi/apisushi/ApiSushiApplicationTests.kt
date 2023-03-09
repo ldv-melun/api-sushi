@@ -30,7 +30,7 @@ class ApiSushiApplicationTests @Autowired constructor(
 	@Test
 	fun verifSourceJsonEtApllicationJson() {
         // compare le fichier JSON d'origine avec la version produite par l'application
-		val FILE_NAME_JSON = "./assets/boxes-sushi.json"
+		val FILE_NAME_JSON = "./boxes-sushi.json"
 
 		val boxesJsonStr: String = File(FILE_NAME_JSON).readText(Charsets.UTF_8)
 

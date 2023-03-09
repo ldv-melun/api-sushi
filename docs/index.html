@@ -457,6 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_résultat_des_tests">Résultat des tests</a></li>
 </ul>
 </li>
+<li><a href="#_le_contrôleur">Le contrôleur</a></li>
 <li><a href="#_lancement_de_lapplication">Lancement de l&#8217;application</a>
 <ul class="sectlevel2">
 <li><a href="#_dans_lide">Dans l&#8217;IDE</a></li>
@@ -480,13 +481,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Le format initial JSON est imposé (provient d&#8217;une situation réelle), et placé à la racine de l&#8217;application :  <a href="boxes-sushi.json">boxes-sushi.json</a>.</p>
 </div>
 <div class="paragraph">
-<p>L&#8217;objectif est de concevoir una application web qui produise ce résultat via une API HTTP.</p>
+<p>Le but de ce projet est de concevoir una application web qui produise ce résultat via une API HTTP.</p>
 </div>
 <div class="paragraph">
 <p>On suppose que l&#8217;application s&#8217;appuie sur une base de donnée relationnelle, au minimum en 3ième forme normale.</p>
 </div>
 <div class="paragraph">
 <p>C&#8217;est une activité de retro-ingénierie.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="analyse-retroconception.png" alt="retroconception"></span></p>
 </div>
 </div>
 </div>
@@ -818,6 +822,27 @@ fun contextLoads() {
 </div>
 </div>
 <div class="sect1">
+<h2 id="_le_contrôleur">Le contrôleur</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En se basant sur <code>RestController</code>, on retourne une liste des boxes au format <code>BoxDtoJson</code> (qui mappe la structure de données de la version JSON initiale)</p>
+</div>
+<div class="listingblock">
+<div class="title">src/&#8230;&#8203;/controller/ApiController</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="typescript">@RestController
+class ApiController @Autowired constructor(private val boxRepository: BoxRepository) {
+
+    @GetMapping(&quot;/api/boxes&quot;)
+    fun allBoxes(): ResponseEntity&lt;List&lt;BoxDtoJson&gt;&gt; {
+        return ResponseEntity.ok(this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) })
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_lancement_de_lapplication">Lancement de l&#8217;application</h2>
 <div class="sectionbody">
 <div class="sect2">
@@ -848,7 +873,7 @@ fun contextLoads() {
 <p><span class="image"><img src="ide-create-jar.png" alt="create jar"></span></p>
 </div>
 <div class="paragraph">
-<p>Le nom de l&#8217;exécutable est déterminé en fonction des informations de version présentes dans le <code>pom.xml</code>.  Dans notre cas on obtient un fichier jar :  <code>api-sushi-0.0.1-SNAPSHOT.jar</code></p>
+<p>Le nom de l&#8217;exécutable est déterminé en fonction des informations de version présentes dans le <code>pom.xml</code>.  Dans notre cas on obtient un fichier jar :  <code>api-sushi-0.0.X-SNAPSHOT.jar</code></p>
 </div>
 <div class="ulist">
 <ul>
@@ -863,7 +888,7 @@ fun contextLoads() {
 <p>Placer une copie du fichier d&#8217;initialisation json dans ce dossier (<a href="boxes-sushi.json">boxes-sushi.json</a>.</p>
 </li>
 <li>
-<p>Lancer la commande <code>java -jar ./api-sushi-0.0.1-SNAPSHOT.jar</code></p>
+<p>Lancer la commande <code>java -jar ./api-sushi-0.0.X-SNAPSHOT.jar</code></p>
 </li>
 </ol>
 </div>
@@ -879,7 +904,7 @@ fun contextLoads() {
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>java -jar ./api-sushi-0.0.1-SNAPSHOT.jar --server.port=8088</pre>
+<pre>java -jar ./api-sushi-0.0.2-SNAPSHOT.jar --server.port=8088</pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -906,7 +931,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-07 19:08:51 +0100
+Last updated 2023-03-09 09:25:30 +0100
 </div>
 </div>
 </body>

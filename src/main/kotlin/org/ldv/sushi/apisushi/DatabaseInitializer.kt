@@ -15,7 +15,7 @@ class DatabaseInitializer @Autowired constructor(
 
     @Throws(Exception::class)
     override fun run(args: ApplicationArguments) {
-        val FILE_NAME_JSON = "./assets/boxes-sushi.json"
+        val FILE_NAME_JSON = "./boxes-sushi.json"
         populateDatabase.databaseInitializer(FILE_NAME_JSON)
     }
 }
