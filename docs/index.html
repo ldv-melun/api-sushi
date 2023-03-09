@@ -741,8 +741,7 @@ for (boxDtoJson in boxesDtoJsonList) {
 <div class="listingblock">
 <div class="title">src/test/resources/application-test.properties</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties">#spring.datasource.url=jdbc:h2:mem:sushi
-spring.datasource.url=jdbc:h2:~/db/testapisushi;AUTO_SERVER=TRUE
+<pre class="CodeRay highlight"><code data-lang="properties">spring.datasource.url=jdbc:h2:mem:sushi
 spring.datasource.driver-class-name=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
@@ -750,7 +749,7 @@ spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 
 # applique une initialisation de la DB via data-h2.sql dans test/resources/
 
-# attention, application.properties de base est également lancé,
+# attention, application.properties de base est également interprété,
 # donc si spring.jpa.hibernate.ddl-auto=create, la base de données sera vide
 # (la mettre en update)
 
@@ -931,7 +930,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-09 09:25:30 +0100
+Last updated 2023-03-09 09:30:25 +0100
 </div>
 </div>
 </body>
