@@ -9,7 +9,7 @@ import javax.persistence.*
 @Table( uniqueConstraints = [UniqueConstraint(columnNames = ["box_id", "aliment_id"])])
 class AlimentBox (@ManyToOne var box: Box,
                   @ManyToOne var aliment: Aliment,
-                  var quantite: Double)
+                  var quantite: Float)
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

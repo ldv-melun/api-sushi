@@ -674,8 +674,14 @@ spring.jpa.hibernate.ddl-auto=create</code></pre>
 21
 22
 23
+24
+25
+26
 </pre></td>
-  <td class="code"><pre>
+  <td class="code"><pre>val mapper = jacksonObjectMapper()
+val boxesJsonStr: String = File(&quot;./boxes-sushi.json&quot;).readText(Charsets.UTF_8)
+val boxesDtoJsonList: List&lt;BoxDtoJson&gt; = mapper.readValue(boxesJsonStr)
+
 for (boxDtoJson in boxesDtoJsonList) {
   val box: Box = Box(
       boxDtoJson.nom,
@@ -817,6 +823,23 @@ fun contextLoads() {
 <div class="paragraph">
 <p><span class="image"><img src="resultat-test-unitaire.png" alt="resultat tu"></span></p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Initialement le premier test avait échoué. Nous avions typé la propriété <code>quantite</code> en <code>Int</code>, mais, sur une boxe (la <em>Sando Box Chicken Katsu</em>), la valeur de quantité de l&#8217;élément <em>Sando Chicken Katsu</em> est de <code>0.5</code>, or nous avions <code>0</code> (arrondi en nombre entier).</p>
+</div>
+<div class="paragraph">
+<p>Ainsi le test unitaire a bien fait son travail. La correction a consisté à changer le type de quantité en <code>Float</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -930,7 +953,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-09 09:30:25 +0100
+Last updated 2023-03-09 09:47:29 +0100
 </div>
 </div>
 </body>

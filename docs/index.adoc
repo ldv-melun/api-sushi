@@ -255,6 +255,9 @@ Pour l'essentiel, les boxes sont créées et sauvegardées dans la base de donn�
 
 [source, kotlin, number]
 ----
+val mapper = jacksonObjectMapper()
+val boxesJsonStr: String = File("./boxes-sushi.json").readText(Charsets.UTF_8)
+val boxesDtoJsonList: List<BoxDtoJson> = mapper.readValue(boxesJsonStr)
 
 for (boxDtoJson in boxesDtoJsonList) {
   val box: Box = Box(
@@ -368,6 +371,13 @@ fun contextLoads() {
 === Résultat des tests
 
 image:resultat-test-unitaire.png[resultat tu]
+
+[NOTE]
+====
+Initialement le premier test avait échoué. Nous avions typé la propriété `quantite` en `Int`, mais, sur une boxe (la _Sando Box Chicken Katsu_), la valeur de quantité de l'élément _Sando Chicken Katsu_ est de `0.5`, or nous avions `0` (arrondi en nombre entier).
+
+Ainsi le test unitaire a bien fait son travail. La correction a consisté à changer le type de quantité en `Float`.
+====
 
 == Le contrôleur
 
