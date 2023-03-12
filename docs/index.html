@@ -590,6 +590,53 @@ La contrainte d&#8217;unicité permet de conserver le statut de <em>classe assoc
 └── Saveur.kt</code></pre>
 </div>
 </div>
+<div class="listingblock">
+<div class="title">Détail de l&#8217;implémentation</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="kotlin">@Entity
+class Aliment(val nom: String ) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}
+
+@Entity
+class Saveur(val nom: String) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}
+
+@Entity
+class Box(
+    var nom: String = &quot;&quot;,
+    var nbPieces: Int = 0,
+    var image: String = &quot;&quot;,
+    var prix: Double = 0.0
+) {
+    @ManyToMany
+    var saveurs = mutableSetOf&lt;Saveur&gt;()
+
+    @OneToMany(mappedBy = &quot;box&quot;)
+    var aliments = mutableListOf&lt;AlimentBox&gt;()
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}
+
+@Entity
+@Table( uniqueConstraints = [UniqueConstraint(columnNames = [&quot;box_id&quot;, &quot;aliment_id&quot;])])
+class AlimentBox (@ManyToOne var box: Box,
+                  @ManyToOne var aliment: Aliment,
+                  var quantite: Float)
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}</code></pre>
+</div>
+</div>
 <div class="paragraph">
 <p>Pour la représentation JSON, on se référera au dossier  <code>dto</code> dans lequel sont définies les classes <code>AlimentBoxDtoJson</code> et <code>BoxDtoJson</code>.</p>
 </div>
@@ -631,6 +678,26 @@ spring.jpa.hibernate.ddl-auto=create</code></pre>
 </div>
 <div class="paragraph">
 <p>Le fichier <code>data-h2.sql</code> nous servira à vérifier qu&#8217;à partir de la base de données obtenue, l&#8217;application est capable de reproduire la sortie JSON initiale (objet d&#8217;un test unitaire plus loin)</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Pour information seulement, voici le schéma relationnel produit par l&#8217;ORM Hibernate pour H2.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="database-sushi.png" alt="database sushi">
+</div>
+<div class="title">Figure 4. Schéma relationnel généré par l&#8217;ORM pour H2 (5 tables)</div>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -960,9 +1027,6 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 <div class="ulist">
 <ul>
 <li>
-<p>Passer le chemin du fichier JSON initial en paramètre de l&#8217;application</p>
-</li>
-<li>
 <p>API : Ajouter l&#8217;accès à une boxe seulement, via son id. Exemple</p>
 <div class="paragraph">
 <p><a href="http://localhost:8080/api/boxe/8" class="bare">http://localhost:8080/api/boxe/8</a></p>
@@ -975,7 +1039,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-09 09:58:31 +0100
+Last updated 2023-03-12 14:27:15 +0100
 </div>
 </div>
 </body>

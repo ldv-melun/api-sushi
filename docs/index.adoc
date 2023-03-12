@@ -211,6 +211,55 @@ domain/
 └── Saveur.kt
 ----
 
+.Détail de l'implémentation
+[source, kotlin]
+----
+@Entity
+class Aliment(val nom: String ) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}
+
+@Entity
+class Saveur(val nom: String) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}
+
+@Entity
+class Box(
+    var nom: String = "",
+    var nbPieces: Int = 0,
+    var image: String = "",
+    var prix: Double = 0.0
+) {
+    @ManyToMany
+    var saveurs = mutableSetOf<Saveur>()
+
+    @OneToMany(mappedBy = "box")
+    var aliments = mutableListOf<AlimentBox>()
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}
+
+@Entity
+@Table( uniqueConstraints = [UniqueConstraint(columnNames = ["box_id", "aliment_id"])])
+class AlimentBox (@ManyToOne var box: Box,
+                  @ManyToOne var aliment: Aliment,
+                  var quantite: Float)
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null
+}
+
+----
+
+
 Pour la représentation JSON, on se référera au dossier  `dto` dans lequel sont définies les classes `AlimentBoxDtoJson` et `BoxDtoJson`.
 
 
@@ -242,6 +291,15 @@ et obtenir un dump de la base (`data-h2.sql`), bien pratique pour initialiser la
 image:genere-data-h2.sql.png[]
 
 Le fichier `data-h2.sql` nous servira à vérifier qu'à partir de la base de données obtenue, l'application est capable de reproduire la sortie JSON initiale (objet d'un test unitaire plus loin)
+
+[NOTE]
+====
+Pour information seulement, voici le schéma relationnel produit par l'ORM Hibernate pour H2.
+
+.Schéma relationnel généré par l'ORM pour H2 (5 tables)
+image::database-sushi.png[]
+
+====
 
 == Initialisation de la base de données
 
