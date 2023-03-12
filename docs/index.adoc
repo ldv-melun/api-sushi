@@ -441,8 +441,6 @@ Le service, une fois lancé, est prêt à recevoir des requêtes HTTP, à une co
 
 (une TODO liste)
 
-- Passer le chemin du fichier JSON initial en paramètre de l'application
-
 - API : Ajouter l'accès à une boxe seulement, via son id. Exemple
 +
 http://localhost:8080/api/boxe/8
