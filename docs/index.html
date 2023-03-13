@@ -855,14 +855,17 @@ fun contextLoads() {
 @Test
  fun verifSourceJsonEtApllicationJson() {
   // compare le fichier JSON d'origine avec la version produite par l'application
-  val FILE_NAME_JSON = &quot;./assets/boxes-sushi.json&quot;
+  val FILE_NAME_JSON = &quot;./boxes-sushi.json&quot;
 
   val boxesJsonStr: String = File(FILE_NAME_JSON).readText(Charsets.UTF_8)
 
   val mapper = jacksonObjectMapper() <b class="conum">(2)</b>
 
-  val boxesJsonFromDataBase: String = mapper.writerWithDefaultPrettyPrinter()
-        .writeValueAsString((this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) }).toList()) <b class="conum">(3)</b>
+  val boxesJsonFromDataBase: String =
+      mapper.writerWithDefaultPrettyPrinter()
+        .writeValueAsString(
+          (this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it)})
+            .toList()) <b class="conum">(3)</b>
 
   JSONAssert.assertEquals(boxesJsonStr, boxesJsonFromDataBase, false) <b class="conum">(4)</b>
  }
@@ -1039,7 +1042,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-12 14:27:15 +0100
+Last updated 2023-03-13 13:58:24 +0100
 </div>
 </div>
 </body>

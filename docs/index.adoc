@@ -407,14 +407,17 @@ fun contextLoads() {
 @Test
  fun verifSourceJsonEtApllicationJson() {
   // compare le fichier JSON d'origine avec la version produite par l'application
-  val FILE_NAME_JSON = "./assets/boxes-sushi.json"
+  val FILE_NAME_JSON = "./boxes-sushi.json"
 
   val boxesJsonStr: String = File(FILE_NAME_JSON).readText(Charsets.UTF_8)
 
   val mapper = jacksonObjectMapper() <2>
 
-  val boxesJsonFromDataBase: String = mapper.writerWithDefaultPrettyPrinter()
-        .writeValueAsString((this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) }).toList()) <3>
+  val boxesJsonFromDataBase: String =
+      mapper.writerWithDefaultPrettyPrinter()
+        .writeValueAsString(
+          (this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it)})
+            .toList()) <3>
 
   JSONAssert.assertEquals(boxesJsonStr, boxesJsonFromDataBase, false) <4>
  }

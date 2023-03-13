@@ -36,8 +36,10 @@ class ApiSushiApplicationTests @Autowired constructor(
 
 		val mapper = jacksonObjectMapper()
 
-		val boxesJsonFromDataBase: String = mapper.writerWithDefaultPrettyPrinter()
-			.writeValueAsString((this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) }).toList())
+		val boxesJsonFromDataBase: String =
+			mapper.writerWithDefaultPrettyPrinter()
+			  .writeValueAsString(
+				  (this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) }).toList())
 
 		JSONAssert.assertEquals(boxesJsonStr, boxesJsonFromDataBase, false)
 	}
