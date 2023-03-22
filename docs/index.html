@@ -464,6 +464,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_en_tant_quexécutable_phase_de_déploiement">En tant qu&#8217;exécutable (phase de déploiement)</a></li>
 </ul>
 </li>
+<li><a href="#_contraintes_cors">Contraintes CORS</a></li>
 <li><a href="#_améliorations_possibles">Améliorations possibles</a></li>
 </ul>
 </div>
@@ -1026,12 +1027,36 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>That&#8217;s all !</p>
 </div>
-<div class="paragraph">
-<p>Le service, une fois lancé, est prêt à recevoir des requêtes HTTP, à une contrainte <em>Cross Origin</em> près (voir <a href="https://spring.io/guides/gs/rest-service-cors/" class="bare">https://spring.io/guides/gs/rest-service-cors/</a>)</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_contraintes_cors">Contraintes CORS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Le service, une fois lancé, est prêt à recevoir des requêtes HTTP, à une contrainte <em>Cross Origin</em> près. Voir :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Présentation de CORS : <a href="https://developer.mozilla.org/fr/docs/Web/HTTP/CORS" class="bare">https://developer.mozilla.org/fr/docs/Web/HTTP/CORS</a></p>
+</li>
+<li>
+<p>Des solutions avec Spring Boot : <a href="https://spring.io/guides/gs/rest-service-cors/" class="bare">https://spring.io/guides/gs/rest-service-cors/</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Comme vous vous en rendrez avec votre application Angular, des modifications au code source de ce projet sont donc nécessaires pour résoudre les problèmes de partage des ressources entre origines multiples.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1056,7 +1081,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-22 19:10:47 +0100
+Last updated 2023-03-22 19:35:10 +0100
 </div>
 </div>
 </body>

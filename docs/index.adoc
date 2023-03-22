@@ -499,9 +499,15 @@ Problème éventuel : le port 8080 est occupé. Choisir un autre port en passant
 
 TIP: Le serveur et application s'arrêtent par un `CTRL+C` dans le terminal qui a lancé la commande comme signalé précédemment (sinon il faut tuer le processus)
 
-That's all !
+== Contraintes CORS
 
-Le service, une fois lancé, est prêt à recevoir des requêtes HTTP, à une contrainte _Cross Origin_ près (voir https://spring.io/guides/gs/rest-service-cors/)
+Le service, une fois lancé, est prêt à recevoir des requêtes HTTP, à une contrainte _Cross Origin_ près. Voir :
+
+* Présentation de CORS : https://developer.mozilla.org/fr/docs/Web/HTTP/CORS
+
+* Des solutions avec Spring Boot : https://spring.io/guides/gs/rest-service-cors/
+
+IMPORTANT: Comme vous vous en rendrez avec votre application Angular, des modifications au code source de ce projet sont donc nécessaires pour résoudre les problèmes de partage des ressources entre origines multiples.
 
 == Améliorations possibles
 
