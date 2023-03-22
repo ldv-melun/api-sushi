@@ -15,6 +15,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.BufferedReader
 import java.io.File
 
 @Service
@@ -35,8 +36,14 @@ class PopulateDatabase @Autowired constructor(
             logger.info("Database not empty. Exit of databaseInitializer (no action)")
             return
         }
+//        logger.info("/static/assets/"+fileNameJson)
+
         val mapper = jacksonObjectMapper()
-        val boxesJsonStr: String = File(fileNameJson).readText(Charsets.UTF_8)
+        val data = javaClass
+            .getResourceAsStream("/assets/"+fileNameJson)
+        val boxesJsonStr = data.bufferedReader().readText()
+        
+//        val boxesJsonStr: String = File(fileNameJson).readText(Charsets.UTF_8)
         val boxesDtoJsonList: List<BoxDtoJson> = mapper.readValue(boxesJsonStr)
 
         logger.info("Database empty. Initialize database")
