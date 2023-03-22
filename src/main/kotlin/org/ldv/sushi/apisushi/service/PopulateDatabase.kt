@@ -42,7 +42,7 @@ class PopulateDatabase @Autowired constructor(
         val data = javaClass
             .getResourceAsStream("/assets/"+fileNameJson)
         val boxesJsonStr = data.bufferedReader().readText()
-        
+
 //        val boxesJsonStr: String = File(fileNameJson).readText(Charsets.UTF_8)
         val boxesDtoJsonList: List<BoxDtoJson> = mapper.readValue(boxesJsonStr)
 

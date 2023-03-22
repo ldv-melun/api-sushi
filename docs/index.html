@@ -565,10 +565,27 @@ La contrainte d&#8217;unicité permet de conserver le statut de <em>classe assoc
 <h2 id="_les_images">Les images</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>En placant les images dans un sous-dossier (nommé images) du dossier <code>/resources/static</code>, on les rend "directement" accessibles.</p>
+<p>En placant les images dans un sous-dossier <code>/resources/static/assets</code>, on les rend  accessibles via un contrôleur dédié (<code>Imagecontroller</code>)</p>
 </div>
 <div class="paragraph">
-<p>Exemple : <a href="http://localhost:8080/images/tasty-blend.jpg" class="bare">http://localhost:8080/images/tasty-blend.jpg</a></p>
+<p>Exemple : <a href="http://localhost:8080/api/image/tasty-blend" class="bare">http://localhost:8080/api/image/tasty-blend</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Vérifier, au cas où, la route à appliquer dans le code du contrôleur.</p>
+</div>
+<div class="paragraph">
+<p>Le contrôleur <code>Imagecontroller</code> applique le pattern <em>null-object</em> pour retourner quand même une image si celle demandée n&#8217;existe pas.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -978,9 +995,6 @@ class ApiController @Autowired constructor(private val boxRepository: BoxReposit
 <p>Copier le jar dans un dossier</p>
 </li>
 <li>
-<p>Placer une copie du fichier d&#8217;initialisation json dans ce dossier (<a href="boxes-sushi.json">boxes-sushi.json</a>.</p>
-</li>
-<li>
 <p>Lancer la commande <code>java -jar ./api-sushi-0.0.X-SNAPSHOT.jar</code></p>
 </li>
 </ol>
@@ -997,7 +1011,7 @@ class ApiController @Autowired constructor(private val boxRepository: BoxReposit
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>java -jar ./api-sushi-0.0.2-SNAPSHOT.jar --server.port=8088</pre>
+<pre>java -jar ./api-sushi-0.0.4-SNAPSHOT.jar --server.port=8088</pre>
 </div>
 </div>
 <div class="admonitionblock tip">
@@ -1042,7 +1056,7 @@ Le serveur et application s&#8217;arrêtent par un <code>CTRL+C</code> dans le t
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-13 13:58:24 +0100
+Last updated 2023-03-22 19:10:47 +0100
 </div>
 </div>
 </body>

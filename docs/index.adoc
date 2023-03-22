@@ -192,10 +192,16 @@ TIP: La contrainte d'unicité permet de conserver le statut de _classe associati
 
 == Les images
 
-En placant les images dans un sous-dossier (nommé images) du dossier `/resources/static`, on les rend "directement" accessibles.
+En placant les images dans un sous-dossier `/resources/static/assets`, on les rend  accessibles via un contrôleur dédié (`Imagecontroller`)
 
-Exemple : http://localhost:8080/images/tasty-blend.jpg
+Exemple : http://localhost:8080/api/image/tasty-blend
 
+[NOTE]
+====
+Vérifier, au cas où, la route à appliquer dans le code du contrôleur.
+
+Le contrôleur `Imagecontroller` applique le pattern _null-object_ pour retourner quand même une image si celle demandée n'existe pas.
+====
 == Mapping Objet Relationnel
 
 Le mapping se base sur <<_analyse_conceptuelle_par_réification_de_la_classe_association>>.
@@ -482,7 +488,6 @@ Le nom de l'exécutable est déterminé en fonction des informations de version 
 * Lancement en ligne de commande
 
 . Copier le jar dans un dossier
-. Placer une copie du fichier d'initialisation json dans ce dossier (link:boxes-sushi.json[boxes-sushi.json].
 . Lancer la commande `java -jar ./api-sushi-0.0.X-SNAPSHOT.jar`
 
 La liste des boxes est accessible via : http://localhost:8080/api/boxes
@@ -490,7 +495,7 @@ La liste des boxes est accessible via : http://localhost:8080/api/boxes
 
 Problème éventuel : le port 8080 est occupé. Choisir un autre port en passant un argument de la forme `--server.port=<numéro de port>`. Exemple
 
- java -jar ./api-sushi-0.0.2-SNAPSHOT.jar --server.port=8088
+ java -jar ./api-sushi-0.0.4-SNAPSHOT.jar --server.port=8088
 
 TIP: Le serveur et application s'arrêtent par un `CTRL+C` dans le terminal qui a lancé la commande comme signalé précédemment (sinon il faut tuer le processus)
 
