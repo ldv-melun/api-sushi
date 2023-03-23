@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class ApiController  @Autowired constructor(private val boxRepository: BoxRepository) {
 
     @GetMapping("/api/boxes")
+    @CrossOrigin(origins = ["*"])
     fun allBoxes(): ResponseEntity<List<BoxDtoJson>> {
         return ResponseEntity.ok(this.boxRepository.findAll().map { fromBoxToBoxDtoJson(it) })
     }

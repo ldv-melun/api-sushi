@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Controller()
+@CrossOrigin(origins = ["*"])
 @RequestMapping(value = ["/api"])
 public class ImageController {
 
@@ -16,7 +17,7 @@ public class ImageController {
     @GetMapping(value = ["/image/{name}"])
     @ResponseBody
     fun image(@PathVariable("name") name: String): ResponseEntity<Any> {
-        logger.info("in image controller : ${name}")
+//        logger.info("in image controller : ${name}")
         var data = javaClass
             .getResourceAsStream("/static/images/" + name + ".jpg")
 
