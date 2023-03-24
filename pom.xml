@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.ldv.sushi</groupId>
 	<artifactId>api-sushi</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<name>api-sushi</name>
 	<description>API Sushi </description>
 	<properties>
