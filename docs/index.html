@@ -508,11 +508,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Exemple de la liste des boxes, on ne prend que les 2 premières boxes, (représentation via plantuml)</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="diag-bd53f1432e284f1b9ea79155940e4d09.png" alt="Diagram" width="692" height="592">
-</div>
-<div class="title">Figure 1. Structure JSON initiale</div>
+<div class="paragraph">
+<p>Unable to render diagram. To render diagrams, go to the AsciiDoc plugin&#8217;s settings and download extensions or enable Kroki.</p>
 </div>
 </div>
 </div>
@@ -522,11 +519,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Après analyse de la structure JSON, nous dégageons les concepts suivants :</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="diag-c6e72d84be011f28db917d61bcf3ef36.png" alt="Diagram" width="276" height="392">
-</div>
-<div class="title">Figure 2. Vue conceptuelle</div>
+<div class="paragraph">
+<p>Unable to render diagram. To render diagrams, go to the AsciiDoc plugin&#8217;s settings and download extensions or enable Kroki.</p>
 </div>
 <div class="paragraph">
 <p>Cette analyse identifie deux associations de type <code>ManyToMany</code>, dont une porteuse d&#8217;une propriété (quantité), représentée par la classe association <code>AlimentBox</code>.</p>
@@ -542,11 +536,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>(c&#8217;est cette version de l&#8217;analyse qui est retenue pour la représentation du domaine)</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="diag-419957c4f1daa71a08f717ca043df294.png" alt="Diagram" width="502" height="302">
-</div>
-<div class="title">Figure 3. Réification de la classe association</div>
+<div class="paragraph">
+<p>Unable to render diagram. To render diagrams, go to the AsciiDoc plugin&#8217;s settings and download extensions or enable Kroki.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -566,7 +557,7 @@ La contrainte d&#8217;unicité permet de conserver le statut de <em>classe assoc
 <h2 id="_les_images">Les images</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>En placant les images dans un sous-dossier <code>/resources/static/assets</code>, on les rend  accessibles via un contrôleur dédié (<code>Imagecontroller</code>)</p>
+<p>Les images placées dans le sous-dossier <code>/resources/static/assets</code>, sont gérées via un contrôleur dédié (<code>Imagecontroller</code>)</p>
 </div>
 <div class="paragraph">
 <p>Exemple : <a href="http://localhost:8080/api/image/tasty-blend" class="bare">http://localhost:8080/api/image/tasty-blend</a></p>
@@ -582,7 +573,7 @@ La contrainte d&#8217;unicité permet de conserver le statut de <em>classe assoc
 <p>Vérifier, au cas où, la route à appliquer dans le code du contrôleur.</p>
 </div>
 <div class="paragraph">
-<p>Le contrôleur <code>Imagecontroller</code> applique le pattern <em>null-object</em> pour retourner quand même une image si celle demandée n&#8217;existe pas.</p>
+<p>Le contrôleur <code>Imagecontroller</code> retourner quand même une image si celle demandée n&#8217;existe pas (un exemple d&#8217;application du design pattern <em>null-object</em>)</p>
 </div>
 </td>
 </tr>
@@ -711,7 +702,7 @@ spring.jpa.hibernate.ddl-auto=create</code></pre>
 <div class="content">
 <img src="database-sushi.png" alt="database sushi">
 </div>
-<div class="title">Figure 4. Schéma relationnel généré par l&#8217;ORM pour H2 (5 tables)</div>
+<div class="title">Figure 1. Schéma relationnel généré par l&#8217;ORM pour H2 (5 tables)</div>
 </div>
 </td>
 </tr>
@@ -1081,7 +1072,7 @@ Comme vous vous en rendrez avec votre application Angular, des modifications au 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-22 19:35:10 +0100
+Last updated 2023-04-26 14:35:57 +0200
 </div>
 </div>
 </body>

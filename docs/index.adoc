@@ -192,7 +192,7 @@ TIP: La contrainte d'unicité permet de conserver le statut de _classe associati
 
 == Les images
 
-En placant les images dans un sous-dossier `/resources/static/assets`, on les rend  accessibles via un contrôleur dédié (`Imagecontroller`)
+Les images placées dans le sous-dossier `/resources/static/assets`, sont gérées via un contrôleur dédié (`Imagecontroller`)
 
 Exemple : http://localhost:8080/api/image/tasty-blend
 
@@ -200,7 +200,7 @@ Exemple : http://localhost:8080/api/image/tasty-blend
 ====
 Vérifier, au cas où, la route à appliquer dans le code du contrôleur.
 
-Le contrôleur `Imagecontroller` applique le pattern _null-object_ pour retourner quand même une image si celle demandée n'existe pas.
+Le contrôleur `Imagecontroller` retourner quand même une image si celle demandée n'existe pas (un exemple d'application du design pattern _null-object_)
 ====
 == Mapping Objet Relationnel
 
